@@ -7,6 +7,7 @@ using System.ComponentModel;
 
 using System.Windows.Media;
 
+// Author: Pedro de Oliveira Lira - pdeolive@syr.edu
 namespace ObservableCollections
 {
     public class Tile : INotifyPropertyChanged

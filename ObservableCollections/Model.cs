@@ -8,7 +8,7 @@ using System.Windows.Media;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
-// Author: Pedro de Oliveira Lira
+// Author: Pedro de Oliveira Lira - pdeolive@syr.edu
 namespace ObservableCollections
 {
     class Model

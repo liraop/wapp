@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BouncingBallSample
+namespace ThreadedBouncingBall
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -21,9 +21,12 @@ namespace BouncingBallSample
     public partial class MainWindow : Window
     {
         private Model _model;
+
+
         public MainWindow()
         {
             InitializeComponent();
+
             // make it so the user cannot resize the window
             this.ResizeMode = ResizeMode.NoResize;
         }
@@ -37,8 +40,6 @@ namespace BouncingBallSample
             this.GameGrid.DataContext = _model;
             _model.InitModel();
             _model.SetStartPosition();
-            MyGameBricks.ItemsSource = _model.BrickCollection;
-
 
         }
 
@@ -66,5 +67,6 @@ namespace BouncingBallSample
         {
             _model.CleanUp();
         }
+
     }
 }

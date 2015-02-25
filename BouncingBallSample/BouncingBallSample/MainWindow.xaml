@@ -35,6 +35,28 @@
                 Height="{Binding paddleHeight}"
                 Width="{Binding paddleWidth}">
             </Rectangle>
+            <ItemsControl
+                x:Name="MyGameBricks"
+                Margin="0,0,0,0"
+                Height="400"
+                Width="766"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:Name="BrickTemplate">
+                        <Canvas VerticalAlignment="Top">
+                            <Rectangle Fill="{Binding Fill}"
+                                       Stroke="DarkRed"
+                                       Height="{Binding BrickHeight}"
+                                       Width="{Binding BrickWidth}"
+                                       Canvas.Top="{Binding BrickCanvasTop}"
+                                       Canvas.Left="{Binding BrickCanvasLeft}"
+                                       Visibility="{Binding BrickVisibility}">
+                            </Rectangle>
+                        </Canvas>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Canvas>
     </Grid>
 </Window>

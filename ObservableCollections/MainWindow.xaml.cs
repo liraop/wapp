@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+// Author : Pedro de Oliveira Lira - pdeolive@syr.edu
 namespace ObservableCollections
 {
     /// <summary>
