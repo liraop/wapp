@@ -3,59 +3,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-// INotifyPropertyChanged
 using System.ComponentModel;
 
-// Brushes
-using System.Windows.Media;
-
-namespace BuncingBallSample
+namespace Homework03
 {
-    public partial class ModelBBS : INotifyPropertyChanged
+    public partial class Model : INotifyPropertyChanged
     {
 
         private double _paddleCanvasTop;
-        public double paddleCanvasTop
+        public double PaddleCanvasTop
         {
             get { return _paddleCanvasTop; }
             set
             {
                 _paddleCanvasTop = value;
-                OnPropertyChanged("paddleCanvasTop");
+                OnPropertyChanged("PaddleCanvasTop");
             }
         }
 
         private double _paddleCanvasLeft;
-        public double paddleCanvasLeft
+        public double PaddleCanvasLeft
         {
             get { return _paddleCanvasLeft; }
             set
             {
                 _paddleCanvasLeft = value;
-                OnPropertyChanged("paddleCanvasLeft");
+                OnPropertyChanged("PaddleCanvasLeft");
             }
         }
 
         private double _paddleHeight;
-        public double paddleHeight
+        public double PaddleHeight
         {
             get { return _paddleHeight; }
             set
             {
                 _paddleHeight = value;
-                OnPropertyChanged("paddleHeight");
+                OnPropertyChanged("PaddleHeight");
             }
         }
 
         private double _paddleWidth;
-        public double paddleWidth
+        public double PaddleWidth
         {
             get { return _paddleWidth; }
             set
             {
                 _paddleWidth = value;
-                OnPropertyChanged("paddleWidth");
+                OnPropertyChanged("PaddleWidth");
             }
         }
     }

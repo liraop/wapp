@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 
 
-namespace BouncingBallSample
+namespace BuncingBallSample
 {
-    public partial class Model: INotifyPropertyChanged
+    public partial class ModelBBS: INotifyPropertyChanged
     {
        
         private double _ballCanvasTop;

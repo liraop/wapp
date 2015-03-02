@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BouncingBallSample
+namespace BuncingBallSample
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Model _model;
+        private ModelBBS _model;
         public MainWindow()
         {
             InitializeComponent();
@@ -31,15 +31,13 @@ namespace BouncingBallSample
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
             // create an instance of our Model
-            _model = new Model();
+            _model = new ModelBBS();
             _model.WindowHeight = BallCanvas.RenderSize.Height;
             _model.WindowWidth = BallCanvas.RenderSize.Width - 16;
             this.GameGrid.DataContext = _model;
             _model.InitModel();
             _model.SetStartPosition();
             MyGameBricks.ItemsSource = _model.BrickCollection;
-
-
         }
 
         private void KeypadDown(object sender, KeyEventArgs e)

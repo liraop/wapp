@@ -7,7 +7,7 @@ using System.Windows.Media;
 using System.ComponentModel;
 using System.Windows;
 
-namespace BouncingBallSample
+namespace BuncingBallSample
 {
     public partial class Brick: INotifyPropertyChanged
     {

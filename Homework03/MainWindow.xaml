@@ -1,0 +1,43 @@
+﻿<Window x:Class="Homework03.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Bouncing Ball" Height="500" Width="766"
+        Loaded="WindowLoaded"
+        KeyDown="KeypadDown" 
+        KeyUp="KeypadUp" 
+        Closing="OnClosing">
+    <Grid Name="GameGrid" Background="Black"  Height="500" Width="766" VerticalAlignment="Bottom">
+        <Canvas Name="ScoreCanvas" Background="BurlyWood" Height="100" Width="766" VerticalAlignment="Top">
+        </Canvas>
+        <Canvas 
+            Name="Canvas"
+            Margin="0,0,0,0" 
+            Height="400" 
+            Width="766"
+            VerticalAlignment="Bottom">
+            <Rectangle
+                Canvas.Top ="{Binding PaddleCanvasTop}"
+                Canvas.Left="{Binding PaddleCanvasLeft}"
+                Fill="White"
+                Height="{Binding PaddleHeight}"
+                Width="{Binding PaddleWidth}">
+            </Rectangle>
+            <Rectangle
+                Canvas.Top ="{Binding BulletCanvasTop}"
+                Canvas.Left="{Binding BulletCanvasLeft}"
+                Visibility="{Binding BulletVisibility}"
+                Fill="Red"
+                Height="{Binding BulletHeight}"
+                Width="{Binding BulletWidth}">
+            </Rectangle>
+            <Image
+                Canvas.Top="{Binding EnemyCanvasTop}"
+                Canvas.Left="{Binding EnemyCanvasLeft}"
+                Height="{Binding EnemyHeight}"
+                Width="{Binding EnemyWidth}"
+                Visibility="{Binding EnemyVisibility}"
+                Source="images/cat.png">
+            </Image>
+        </Canvas>
+    </Grid>
+</Window>

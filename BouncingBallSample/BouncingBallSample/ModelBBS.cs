@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,9 +30,9 @@ using System.ComponentModel;
 // observable collections
 using System.Collections.ObjectModel;
 
-namespace BouncingBallSample
+namespace BuncingBallSample
 {
-    public partial class Model : INotifyPropertyChanged
+    public partial class ModelBBS : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
@@ -116,19 +116,10 @@ namespace BouncingBallSample
                 }
             }
 
-
-            // this delegate is needed for the multi media timer defined 
-            // in the TimerQueueTimer class.
-
-            // this delegate is needed for the multi media timer defined 
-            // in the TimerQueueTimer class.
             _ballTimerCallbackDelegate = new TimerQueueTimer.WaitOrTimerDelegate(BallMMTimerCallback);
-
-            // create our multi-media timers
             _ballHiResTimer = new TimerQueueTimer();
             try
             {
-                // create a Multi Media Hi Res timer.
                 _ballHiResTimer.Create(8, 8, _ballTimerCallbackDelegate);
             }
             catch (QueueTimerException ex)
@@ -138,7 +129,6 @@ namespace BouncingBallSample
             }
 
             _paddleTimerCallbackDelegate = new TimerQueueTimer.WaitOrTimerDelegate(paddleMMTimerCallback);
-
             _paddleHiResTimer = new TimerQueueTimer();
 
             try
@@ -217,10 +207,6 @@ namespace BouncingBallSample
             if (!_moveBall)
                 return;
 
-            // start executing callback. this ensures we are synched correctly
-            // if the form is abruptly closed
-            // if this function returns false, we should exit the callback immediately
-            // this means we did not get the mutex, and the timer is being deleted.
             if (!_ballHiResTimer.ExecutingCallback())
             {
                 Console.WriteLine("Aborting timer callback.");
@@ -232,7 +218,6 @@ namespace BouncingBallSample
 
             if (BallCanvasTop + BallWidth >= _windowHeight)
             {
-                // we hit bottom. stop moving the ball
                 _moveBall = false;
             }
 
@@ -240,25 +225,15 @@ namespace BouncingBallSample
 
             if (_ballRectangle.IntersectsWith(_paddleRectangle))
             {
-                // hit paddle. reverse direction in Y direction
                 _ballYMove = -_ballYMove;
-
-                //    // move the ball away from the paddle so we don't intersect next time around and
-                //    // get stick in a loop where the ball is bouncing repeatedly on the paddle
                 BallCanvasTop += 2 * _ballYMove;
-
-                //    // add move the ball in X some small random value so that ball is not traveling in the same 
-                //    // pattern
                 BallCanvasLeft += _randomNumber.Next(5);
             }
 
-            //// check to see if ball has it the left or right side of the drawing element
             if ((BallCanvasLeft + BallWidth >= _windowWidth) ||
                 (BallCanvasLeft <= 0))
                 _ballXMove = -_ballXMove;
 
-
-            //// check to see if ball has it the top of the drawing element
             if (BallCanvasTop <= 0)
                 _ballYMove = -_ballYMove;
 
