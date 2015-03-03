@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Windows;
 
+// Student: Pedro de Oliveira Lira
 namespace Homework03
 {
     public partial class Model : INotifyPropertyChanged

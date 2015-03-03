@@ -10,11 +10,11 @@ using System.Threading;
 using PrecisionTimers;
 using System.Windows.Media;
 
+// Student: Pedro de Oliveira Lira
 namespace Homework03
 {
     public partial class Model : INotifyPropertyChanged
     {
-        System.Media.SoundPlayer _player = new System.Media.SoundPlayer();
         Random _randomNumber = new Random();
         private TimerQueueTimer.WaitOrTimerDelegate _bulletCallbackDelegate;
         private TimerQueueTimer _bulletHiResTimer;
@@ -24,7 +24,7 @@ namespace Homework03
 
         private TimerQueueTimer.WaitOrTimerDelegate _enemyCallbackDelegate;
         private TimerQueueTimer _enemyHiResTimer;
-        private double _enemySpeed;
+        private double _enemySpeed = 1;
         private bool _enemyOnScreen = false;
         System.Drawing.Rectangle _enemyRectangle;
         
@@ -72,14 +72,6 @@ namespace Homework03
             }
         }
 
-        public void NewGame(bool start)
-        {
-            if (start)
-            {
-                StartPosition();
-            }
-        }
-
         public void MoveLeft(bool move)
         {
             _movepaddleLeft = move;
@@ -100,6 +92,12 @@ namespace Homework03
             }
         }
 
+        public void NewGame()
+        {
+            InitModel();
+            StartPosition();
+        }
+
         public void InitModel()
         {
            if (_threadPaddle == null)
@@ -109,12 +107,16 @@ namespace Homework03
                 _threadPaddle.Start();
             }
 
-            _bulletCallbackDelegate = new TimerQueueTimer.WaitOrTimerDelegate(BulletMMTimerCallback);
+           if (_bulletCallbackDelegate == null)
+           {
+               _bulletCallbackDelegate = new TimerQueueTimer.WaitOrTimerDelegate(BulletMMTimerCallback);
+           }
+            
             _bulletHiResTimer = new TimerQueueTimer();
 
             try
             {
-                _bulletHiResTimer.Create(8, 8, _bulletCallbackDelegate);
+                _bulletHiResTimer.Create(100, 10, _bulletCallbackDelegate);
             }
             catch (QueueTimerException ex)
             {
@@ -122,12 +124,17 @@ namespace Homework03
                 Console.WriteLine("Failed to create bullet timer. Error from GetLastError = {0}", ex.Error);
             }
 
-            _enemyCallbackDelegate = new TimerQueueTimer.WaitOrTimerDelegate(EnemyMMTimerCallback);
+            if (_enemyCallbackDelegate == null)
+            {
+                _enemyCallbackDelegate = new TimerQueueTimer.WaitOrTimerDelegate(EnemyMMTimerCallback);
+            }
+
             _enemyHiResTimer = new TimerQueueTimer();
+
 
             try
             {
-                _enemyHiResTimer.Create(8, 8, _enemyCallbackDelegate);
+                _enemyHiResTimer.Create(100, 10, _enemyCallbackDelegate);
             }
             catch (QueueTimerException ex)
             {
@@ -135,15 +142,17 @@ namespace Homework03
                 Console.WriteLine("Failed to create enemy timer. Error from GetLastError = {0}", ex.Error);
             }
 
+            KeyStrokes = "Arrows for paddle move\n Space for shoot \n Enter for start the game\n If you loose, doesn't work to press enter. Deal with it.";
         }
 
         public void StartPosition()
         {
+            
+            Points = 0;
             BulletHeight = 10;
             BulletWidth = 10;
-
+            GoVisibility = System.Windows.Visibility.Hidden;
             _moveBullet = false;
-            _enemyOnScreen = true;
 
             PaddleWidth = 120;
             PaddleHeight = 5;
@@ -153,6 +162,7 @@ namespace Homework03
 
             EnemyHeight = 80;
             EnemyWidth = 40;
+        
 
             SetBulletStartPos();
             setEnemyStartPos();
@@ -168,24 +178,19 @@ namespace Homework03
             {
                 Console.WriteLine("Aborting timer callback.");
                 return;
-            }
+            }            
 
             if (BulletCanvasTop > 0)
             {
                 BulletCanvasTop -= _bulletSpeed;
             }
-            else if (_bulletRectangle.IntersectsWith(_enemyRectangle))
-            {
-                Console.WriteLine("bateu porra!");
-                BulletVisibility = System.Windows.Visibility.Hidden;
-                _moveBullet = false;
-            }
-            else 
+            
+            if (BulletCanvasTop <= 0)
             {
                 BulletVisibility = System.Windows.Visibility.Hidden;
                 _moveBullet = false;
             }
-    
+
             _bulletRectangle = new System.Drawing.Rectangle((int)BulletCanvasLeft, (int)BulletCanvasTop, (int)BulletWidth, (int)BulletHeight);
             _bulletHiResTimer.DoneExecutingCallback();
         }
@@ -205,21 +210,47 @@ namespace Homework03
             {
                 EnemyCanvasTop += _enemySpeed;
             }
-            else if (_enemyRectangle.IntersectsWith(_bulletRectangle) ||
-                     _enemyRectangle.IntersectsWith(_paddleRectangle) )
-            {
-                Console.WriteLine("bateu porra!\n");
-                EnemyVisibility = System.Windows.Visibility.Hidden;
-                _enemyOnScreen = false;
-            }
-            else
+            
+            if (_enemyRectangle.IntersectsWith(_bulletRectangle) && 
+                BulletVisibility == System.Windows.Visibility.Visible &&
+                EnemyVisibility == System.Windows.Visibility.Visible)
             {
                 EnemyVisibility = System.Windows.Visibility.Hidden;
-                _enemyOnScreen = false;
+                BulletVisibility = System.Windows.Visibility.Hidden;
+                Points += 1;
+                (new System.Media.SoundPlayer("../../sounds/death.wav")).Play();
+                setEnemyStartPos();
             }
-           
+
+            if (_enemyRectangle.IntersectsWith(_paddleRectangle) ||
+                EnemyCanvasTop >= _windowHeight)
+            {
+                EnemyVisibility = System.Windows.Visibility.Hidden;                                 
+                Gameover();
+            }
+            
             _enemyRectangle = new System.Drawing.Rectangle((int)EnemyCanvasLeft, (int)EnemyCanvasTop, (int)EnemyWidth, (int)EnemyHeight);
-            _enemyHiResTimer.DoneExecutingCallback();
+
+            try
+            {
+                _enemyHiResTimer.DoneExecutingCallback();
+            }
+            catch (Exception e)
+            {
+
+            }
+
+        }
+
+        private void Gameover()
+        {
+            GoMessage = "CAT WON, LOOSER!";
+            GoWidth = WindowHeight;
+            GoHeight = WindowWidth;
+            GoCanvasLeft = WindowWidth/2 - GoWidth/2;
+            GoCanvasTop = WindowHeight/2;
+            GoVisibility = System.Windows.Visibility.Visible;
+            (new System.Media.SoundPlayer("../../sounds/death.wav")).Play();
         }
 
         private void SetBulletStartPos()
@@ -231,24 +262,33 @@ namespace Homework03
 
         private void setEnemyStartPos()
         {
-            EnemyVisibility = System.Windows.Visibility.Visible;
-           EnemyCanvasLeft = _randomNumber.Next(0,(int) _windowWidth);
-           _enemySpeed = _randomNumber.Next(1, 5); 
+           _enemyOnScreen = true;
+           EnemyVisibility = System.Windows.Visibility.Visible;
+           EnemyCanvasLeft = _randomNumber.Next(0,(int) (_windowWidth - EnemyWidth/2));
+           _enemySpeed = _randomNumber.Next(1, 3); 
            EnemyCanvasTop = -24;
-           _player = new System.Media.SoundPlayer("../../sounds/meow.wav");
-           _player.Play();
+
         }
    
         public void CleanUp()
         {
-            //***********************************
-            // STOP THE PADDLE THREAD HERE
-            //***********************************
+            try
+            {
+                _enemyHiResTimer.Delete();
+                _bulletHiResTimer.Delete();
+
+            }
+            catch (Exception e)
+            {
+                
+            }
+
             if (_threadPaddle != null && _threadPaddle.IsAlive)
             {
                 _threadPaddle.Abort();
                 _threadPaddle = null;
             }
+
         }
 
         private void paddleThreadFunction()
@@ -261,7 +301,7 @@ namespace Homework03
                     PaddleCanvasLeft += 2;
 
                 _paddleRectangle = new System.Drawing.Rectangle((int)PaddleCanvasLeft, (int)PaddleCanvasTop, (int)PaddleWidth, (int)PaddleHeight);
-                Thread.Sleep(10);
+                Thread.Sleep(2);
             }
 
         }

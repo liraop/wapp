@@ -31,12 +31,8 @@ namespace Homework03
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
             _model = new Model();
-            _model.InitModel();
             _model.WindowHeight = Canvas.RenderSize.Height;
             _model.WindowWidth = Canvas.RenderSize.Width - 16;
-            _model.ScoreTabHeight = ScoreCanvas.RenderSize.Height;
-            _model.ScoreTabWidth = ScoreCanvas.RenderSize.Width;
-
             this.GameGrid.DataContext = _model;
         }
 
@@ -49,7 +45,7 @@ namespace Homework03
             else if (e.Key == Key.Space)
                 _model.Shoot(true);
             else if (e.Key == Key.Enter)
-                _model.NewGame(true);
+                _model.NewGame();
         }
 
         private void KeypadUp(object sender, KeyEventArgs e)

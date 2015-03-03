@@ -7,7 +7,19 @@
         KeyUp="KeypadUp" 
         Closing="OnClosing">
     <Grid Name="GameGrid" Background="Black"  Height="500" Width="766" VerticalAlignment="Bottom">
-        <Canvas Name="ScoreCanvas" Background="BurlyWood" Height="100" Width="766" VerticalAlignment="Top">
+        <Canvas Name="ScoreCanvas" Background="White" Height="100" Width="766" VerticalAlignment="Top">
+            <Label Name="Score" 
+                   Content="Score"
+                   Foreground="Black" Height="75" Width="160" Canvas.Left="388" Canvas.Top="25"
+                   FontSize="24">
+            </Label>
+            <Label Name="Points" 
+                   Content="{Binding Points}" 
+                   Foreground="Black" Height="75" Width="192" Canvas.Left="553" Canvas.Top="25"
+                   FontSize="24">
+            </Label>
+            <Label Name="KeyStrokes" Foreground="Black" Canvas.Left="10" Canvas.Top="25" Height="65" Width="373"
+                   Content="{Binding KeyStrokes}"></Label>
         </Canvas>
         <Canvas 
             Name="Canvas"
@@ -26,7 +38,7 @@
                 Canvas.Top ="{Binding BulletCanvasTop}"
                 Canvas.Left="{Binding BulletCanvasLeft}"
                 Visibility="{Binding BulletVisibility}"
-                Fill="Red"
+                Fill="White"
                 Height="{Binding BulletHeight}"
                 Width="{Binding BulletWidth}">
             </Rectangle>
@@ -38,6 +50,16 @@
                 Visibility="{Binding EnemyVisibility}"
                 Source="images/cat.png">
             </Image>
+            <Label Name="GameOver"
+                   FontSize="18" 
+                   Height="{Binding GoHeight}"
+                   Width="{Binding GoWidth}"
+                   Canvas.Top="{Binding GoCanvasTop}"
+                   Canvas.Left="{Binding GoCanvasLeft}"
+                   Content="{Binding GoMessage}"
+                   Visibility="{Binding GoVisibility}"
+                   Foreground="White">
+            </Label>
         </Canvas>
     </Grid>
 </Window>
