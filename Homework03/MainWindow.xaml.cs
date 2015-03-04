@@ -34,6 +34,7 @@ namespace Homework03
             _model.WindowHeight = Canvas.RenderSize.Height;
             _model.WindowWidth = Canvas.RenderSize.Width - 16;
             this.GameGrid.DataContext = _model;
+            _model.SetKeyStrokes();
         }
 
         private void KeypadDown(object sender, KeyEventArgs e)

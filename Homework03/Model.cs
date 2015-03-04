@@ -150,7 +150,6 @@ namespace Homework03
                 }
             }
 
-            KeyStrokes = "Arrows for paddle move\n Space for shoot \n Enter for start the game\n If you loose, doesn't work to press enter. Deal with it.";
         }
 
         public void StartPosition()
@@ -246,7 +245,7 @@ namespace Homework03
             }
             catch (Exception e)
             {
-
+                Console.WriteLine(e.Message);
             }
 
         }
@@ -277,6 +276,11 @@ namespace Homework03
            _enemySpeed = _randomNumber.Next(1, 3); 
            EnemyCanvasTop = -24;
 
+        }
+
+        public void SetKeyStrokes()
+        {
+            KeyStrokes = "Arrows for paddle move\n Space for shoot \n Enter for start the game.";
         }
    
         public void CleanUp()
