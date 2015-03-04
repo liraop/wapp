@@ -112,34 +112,42 @@ namespace Homework03
                _bulletCallbackDelegate = new TimerQueueTimer.WaitOrTimerDelegate(BulletMMTimerCallback);
            }
             
-            _bulletHiResTimer = new TimerQueueTimer();
-
-            try
+            if (_bulletHiResTimer == null)
             {
-                _bulletHiResTimer.Create(100, 10, _bulletCallbackDelegate);
+                _bulletHiResTimer = new TimerQueueTimer();
+
+                try
+                {
+                    _bulletHiResTimer.Create(100, 10, _bulletCallbackDelegate);
+                }
+                catch (QueueTimerException ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    Console.WriteLine("Failed to create bullet timer. Error from GetLastError = {0}", ex.Error);
+                }
+
+                if (_enemyCallbackDelegate == null)
+                {
+                    _enemyCallbackDelegate = new TimerQueueTimer.WaitOrTimerDelegate(EnemyMMTimerCallback);
+                }
             }
-            catch (QueueTimerException ex)
-            {
-                Console.WriteLine(ex.ToString());
-                Console.WriteLine("Failed to create bullet timer. Error from GetLastError = {0}", ex.Error);
-            }
-
-            if (_enemyCallbackDelegate == null)
-            {
-                _enemyCallbackDelegate = new TimerQueueTimer.WaitOrTimerDelegate(EnemyMMTimerCallback);
-            }
-
-            _enemyHiResTimer = new TimerQueueTimer();
 
 
-            try
+
+            if (_enemyHiResTimer == null)
             {
-                _enemyHiResTimer.Create(100, 10, _enemyCallbackDelegate);
-            }
-            catch (QueueTimerException ex)
-            {
-                Console.WriteLine(ex.ToString());
-                Console.WriteLine("Failed to create enemy timer. Error from GetLastError = {0}", ex.Error);
+                _enemyHiResTimer = new TimerQueueTimer();
+
+
+                try
+                {
+                    _enemyHiResTimer.Create(100, 10, _enemyCallbackDelegate);
+                }
+                catch (QueueTimerException ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    Console.WriteLine("Failed to create enemy timer. Error from GetLastError = {0}", ex.Error);
+                }
             }
 
             KeyStrokes = "Arrows for paddle move\n Space for shoot \n Enter for start the game\n If you loose, doesn't work to press enter. Deal with it.";
@@ -210,7 +218,7 @@ namespace Homework03
             {
                 EnemyCanvasTop += _enemySpeed;
             }
-            
+             
             if (_enemyRectangle.IntersectsWith(_bulletRectangle) && 
                 BulletVisibility == System.Windows.Visibility.Visible &&
                 EnemyVisibility == System.Windows.Visibility.Visible)
@@ -222,8 +230,9 @@ namespace Homework03
                 setEnemyStartPos();
             }
 
-            if (_enemyRectangle.IntersectsWith(_paddleRectangle) ||
-                EnemyCanvasTop >= _windowHeight)
+            if ((_enemyRectangle.IntersectsWith(_paddleRectangle) ||
+                EnemyCanvasTop >= _windowHeight ) &&
+                EnemyVisibility == System.Windows.Visibility.Visible)
             {
                 EnemyVisibility = System.Windows.Visibility.Hidden;                                 
                 Gameover();
